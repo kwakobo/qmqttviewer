@@ -6,6 +6,7 @@
 #include "decoder/hexmessagedecoder.h"
 #include "decoder/jsonprettymessagedecoder.h"
 #include "decoder/plainmessagedecoder.h"
+#include "decoder/sparkplugmessagedecoder.h"
 
 #include <QButtonGroup>
 #include <QSettings>
@@ -24,6 +25,7 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
                                                     new JsonPrettyMessageDecoder,
                                                     new Base64Decoder,
                                                     new HexMessageDecoder,
+                                                    new SparkplugMessageDecoder,
                                                 })
 {
     ui->setupUi(this);
