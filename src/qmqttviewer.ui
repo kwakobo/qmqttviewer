@@ -83,7 +83,7 @@
        <attribute name="title">
         <string>Publish</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QWidget" name="controlView" native="true">
           <property name="sizePolicy">
@@ -174,7 +174,7 @@
        <attribute name="title">
         <string>Subscribe</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QWidget" name="controlView" native="true">
           <property name="sizePolicy">
@@ -183,7 +183,7 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
            <property name="leftMargin">
             <number>0</number>
            </property>
@@ -207,7 +207,7 @@
             </widget>
            </item>
            <item>
-            <spacer name="horizontalSpacer">
+            <spacer name="horizontalSpacer_2">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -272,7 +272,7 @@
           </property>
           <widget class="QListView" name="subscriptions"/>
           <widget class="QWidget" name="payloadWidget" native="true">
-           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <layout class="QVBoxLayout" name="verticalLayout_4">
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -295,7 +295,7 @@
               </property>
               <widget class="QListView" name="messages"/>
               <widget class="QWidget" name="widget_2" native="true">
-               <layout class="QVBoxLayout" name="verticalLayout_3">
+               <layout class="QVBoxLayout" name="verticalLayout_5">
                 <property name="spacing">
                  <number>0</number>
                 </property>
@@ -398,7 +398,7 @@
             </item>
             <item>
              <widget class="QWidget" name="widget" native="true">
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
                <property name="leftMargin">
                 <number>0</number>
                </property>
@@ -412,7 +412,7 @@
                 <number>0</number>
                </property>
                <item>
-                <spacer name="horizontalSpacer_2">
+                <spacer name="horizontalSpacer_3">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>

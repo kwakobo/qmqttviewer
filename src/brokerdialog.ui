@@ -141,7 +141,7 @@
             <attribute name="title">
              <string>General</string>
             </attribute>
-            <layout class="QFormLayout" name="formLayout">
+            <layout class="QFormLayout" name="formLayout_2">
              <item row="0" column="0">
               <widget class="QLabel" name="keepAliveLabel">
                <property name="text">
@@ -196,7 +196,7 @@
             <attribute name="title">
              <string>User Credentials</string>
             </attribute>
-            <layout class="QFormLayout" name="formLayout">
+            <layout class="QFormLayout" name="formLayout_3">
              <item row="0" column="1">
               <widget class="QLineEdit" name="username"/>
              </item>
@@ -223,7 +223,7 @@
             <attribute name="title">
              <string>SSL/TLS</string>
             </attribute>
-            <layout class="QFormLayout" name="formLayout">
+            <layout class="QFormLayout" name="formLayout_4">
              <item row="1" column="1">
               <widget class="QComboBox" name="sslProtocol"/>
              </item>
