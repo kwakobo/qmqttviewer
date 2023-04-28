@@ -17,7 +17,7 @@ static QPlainTextEdit *edit = nullptr;
 static void log(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
 QMqttViewer::QMqttViewer(QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::QMqttViewer), client(new QMqttClient),
+    QMainWindow(parent), ui(new Ui::QMqttViewer), client(new QMqttClient(this)),
     brokers(new BrokerModel(this)), messages(new MessageModel(this)),
     subscriptions(new SubscriptionModel(this)), decoders({
                                                     new PlainMessageDecoder,
