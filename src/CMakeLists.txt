@@ -16,7 +16,6 @@ add_executable(qmqttviewer WIN32
     decoder/hexmessagedecoder.cpp decoder/hexmessagedecoder.h
     decoder/jsonprettymessagedecoder.h decoder/jsonprettymessagedecoder.cpp
     decoder/plainmessagedecoder.cpp decoder/plainmessagedecoder.h
-    ${RESOURCES}
     ${FORMS_HEADERS}
 )
 
