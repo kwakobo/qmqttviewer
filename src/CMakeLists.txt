@@ -20,7 +20,7 @@ add_executable(qmqttviewer WIN32
 )
 
 target_link_libraries(qmqttviewer
-    PUBLIC
+    PRIVATE
         Qt6::Core
         Qt6::Mqtt
         Qt6::Widgets
