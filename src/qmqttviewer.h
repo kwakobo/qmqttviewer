@@ -31,6 +31,7 @@ private slots:
 
     void handleConnected();
     void handelDisconnected();
+    void handleError(QMqttClient::ClientError error);
 
     void handleConnect();
     void handlePublish();

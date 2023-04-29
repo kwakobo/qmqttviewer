@@ -72,6 +72,7 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
 
     connect(client, &QMqttClient::connected, this, &QMqttViewer::handleConnected);
     connect(client, &QMqttClient::disconnected, this, &QMqttViewer::handelDisconnected);
+    connect(client, &QMqttClient::errorChanged, this, &QMqttViewer::handleError);
 
     widgets = {ui->publishTab, ui->subscribeTab};
 
@@ -160,6 +161,21 @@ void QMqttViewer::handelDisconnected()
     auto broker = brokers->get(index);
     if (broker.autoReconnect)
         handleConnect();
+}
+
+void QMqttViewer::handleError(QMqttClient::ClientError error)
+{
+    switch (error) {
+    case QMqttClient::InvalidProtocolVersion:
+        qWarning() << "Broker does not accept a connetion using the specified protocol version";
+        break;
+    case QMqttClient::NotAuthorized:
+        qWarning() << "Authentication failed";
+        break;
+    default:
+        qDebug() << error;
+        break;
+    }
 }
 
 void QMqttViewer::handleConnect()
