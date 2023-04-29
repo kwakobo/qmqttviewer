@@ -139,6 +139,7 @@ void QMqttViewer::handleConnected()
     ui->statusBar->showMessage(QStringLiteral("Connected"));
     qInfo() << "Connected to" << client->hostname();
 
+    ui->connect->setText(tr("Disconnected"));
     for (const auto &widget : qAsConst(widgets))
         widget->setEnabled(true);
 }
@@ -162,7 +163,9 @@ void QMqttViewer::handelDisconnected()
 
 void QMqttViewer::handleConnect()
 {
-    if (client->state() != QMqttClient::Disconnected) {
+    if (client->state() == QMqttClient::Connecting) {
+        return;
+    } else if (client->state() == QMqttClient::Connected) {
         qInfo() << "Disconnecting from host";
         client->disconnectFromHost();
         return;
@@ -188,7 +191,7 @@ void QMqttViewer::handleConnect()
     } else {
         client->connectToHost();
     }
-    ui->connect->setText(tr("Disconnect"));
+    ui->connect->setText(tr("Connecting"));
 }
 
 static int qos(const QList<QCheckBox *> &checkboxes)
