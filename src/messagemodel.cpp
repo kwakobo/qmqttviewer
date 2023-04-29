@@ -12,6 +12,11 @@ void MessageModel::addMessage(const QMqttMessage &message)
     endInsertRows();
 }
 
+void MessageModel::clear()
+{
+    removeRows(0, rowCount());
+}
+
 QVariant MessageModel::data(const QModelIndex &index, int role) const
 {
     if (index.row() < 0 || index.row() > rowCount())
@@ -35,4 +40,14 @@ int MessageModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
     return messages.count();
+}
+
+bool MessageModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    if (count <= 0 || row < 0 || (row + count) > rowCount(parent))
+        return false;
+    beginRemoveRows(parent, row, row + count - 1);
+    messages.remove(row, count);
+    endRemoveRows();
+    return true;
 }

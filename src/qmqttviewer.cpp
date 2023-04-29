@@ -156,6 +156,7 @@ void QMqttViewer::handelDisconnected()
         widget->setEnabled(false);
 
     subscriptions->clear();
+    messages->clear();
 
     auto index = ui->broker->currentIndex();
     auto broker = brokers->get(index);
