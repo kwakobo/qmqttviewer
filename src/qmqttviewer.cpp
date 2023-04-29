@@ -141,7 +141,7 @@ void QMqttViewer::handleConnected()
     ui->statusBar->showMessage(QStringLiteral("Connected"));
     qInfo() << "Connected to" << client->hostname();
 
-    ui->connect->setText(tr("Disconnected"));
+    ui->connect->setText(tr("Disconnect"));
     for (const auto &widget : qAsConst(widgets))
         widget->setEnabled(true);
 }
