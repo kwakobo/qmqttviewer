@@ -83,6 +83,7 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
 
 QMqttViewer::~QMqttViewer()
 {
+    delete client;
     delete ui;
     qDeleteAll(decoders);
 }
