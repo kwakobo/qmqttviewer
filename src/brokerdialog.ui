@@ -31,12 +31,18 @@
            <property name="text">
             <string>Add</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="remove">
            <property name="text">
             <string>Remove</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -120,6 +126,9 @@
              <widget class="QPushButton" name="generate">
               <property name="text">
                <string>Generate</string>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -281,12 +290,18 @@
            <property name="text">
             <string>Cancel</string>
            </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="apply">
            <property name="text">
             <string>Apply</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
