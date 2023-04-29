@@ -164,9 +164,7 @@ void QMqttViewer::handelDisconnected()
 
 void QMqttViewer::handleConnect()
 {
-    if (client->state() == QMqttClient::Connecting) {
-        return;
-    } else if (client->state() == QMqttClient::Connected) {
+    if (client->state() != QMqttClient::Disconnected) {
         qInfo() << "Disconnecting from host";
         client->disconnectFromHost();
         return;
