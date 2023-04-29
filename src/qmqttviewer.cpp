@@ -202,7 +202,10 @@ static int qos(const QList<QCheckBox *> &checkboxes)
 
 void QMqttViewer::handlePublish()
 {
-    client->publish(ui->publishTopic->text(),
+    auto topic = ui->publishTopic->text();
+    if (topic.isEmpty())
+        return;
+    client->publish(topic,
                     ui->payload->toPlainText().toLocal8Bit(),
                     qos({ui->publishQos0, ui->publishQos1, ui->publishQos2}),
                     ui->retained->isChecked());
@@ -211,7 +214,7 @@ void QMqttViewer::handlePublish()
 void QMqttViewer::handleSubscribe()
 {
     auto topic = ui->subcribeTopic->text();
-    if (subscriptions->contains(topic))
+    if (topic.isEmpty() || subscriptions->contains(topic))
         return;
     auto subscription = client->subscribe(topic,
                                           qos({ui->subscriptionQos0,
