@@ -1,0 +1,17 @@
+name: Build
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt update && sudo apt install build-essential ninja-build libgl1-mesa-dev qt6-base-dev qt6-base-private-dev protobuf-compiler libprotobuf-dev
+      - run: git clone --depth 1 --branch v6.2.4 https://github.com/qt/qtmqtt.git
+             && cd qtmqtt
+             && cmake -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Debug -DQT_BUILD_TESTS=OFF
+             && cmake --build build -- -j4
+             && sudo cmake --build build --target install --
+      - uses: actions/checkout@v3
+      - run: cmake -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Debug
+             && cmake --build build -- -j4
