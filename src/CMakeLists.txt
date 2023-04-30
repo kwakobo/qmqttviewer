@@ -19,6 +19,7 @@ add_executable(qmqttviewer WIN32
     messagemodel.h messagemodel.cpp
     mqttpayload.h
     qmqttviewer.cpp qmqttviewer.h qmqttviewer.ui
+    subscriptionitemdelegate.h subscriptionitemdelegate.cpp
     subscriptionmodel.h subscriptionmodel.cpp
     decoder/abstractmessagedecoder.h
     decoder/base64decoder.h decoder/base64decoder.cpp

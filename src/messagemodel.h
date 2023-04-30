@@ -19,6 +19,8 @@ public:
 
     void addMessage(const QMqttMessage &message);
 
+    void removeMessage(const QMqttMessage &message);
+
     void clear();
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

@@ -1,5 +1,6 @@
 #include "qmqttviewer.h"
 #include "brokerdialog.h"
+#include "subscriptionitemdelegate.h"
 #include "ui_qmqttviewer.h"
 
 #include "decoder/base64decoder.h"
@@ -46,6 +47,8 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
     subscribeQos->addButton(ui->subscriptionQos0);
     subscribeQos->addButton(ui->subscriptionQos1);
     subscribeQos->addButton(ui->subscriptionQos2);
+
+    ui->subscriptions->setItemDelegate(new SubscriptionItemDelegate(this));
 
     connect(ui->exit, &QAction::triggered, qApp, &QApplication::exit);
     connect(ui->editConnections, &QAction::triggered, this, &QMqttViewer::openAddBrokerDialog);
@@ -249,6 +252,14 @@ void QMqttViewer::handleSubscribe()
 void QMqttViewer::handleMessageReceived(const QMqttMessage &message)
 {
     messages->addMessage(message);
+    auto subscription = qobject_cast<QMqttSubscription *>(sender());
+    connect(subscription,
+            &QMqttSubscription::stateChanged,
+            this,
+            [this, message](QMqttSubscription::SubscriptionState state) {
+                if (state == QMqttSubscription::Unsubscribed)
+                    messages->removeMessage(message);
+            });
 }
 
 void QMqttViewer::handleMessageDecoder(int index)

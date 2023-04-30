@@ -48,6 +48,8 @@ bool SubscriptionModel::removeRows(int row, int count, const QModelIndex &parent
     if (count <= 0 || row < 0 || (row + count) > rowCount(parent))
         return false;
     beginRemoveRows(parent, row, row + count - 1);
+    auto subscription = subscriptions.at(row);
+    subscription->unsubscribe();
     subscriptions.remove(row, count);
     endRemoveRows();
     return true;

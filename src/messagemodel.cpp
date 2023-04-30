@@ -12,6 +12,16 @@ void MessageModel::addMessage(const QMqttMessage &message)
     endInsertRows();
 }
 
+void MessageModel::removeMessage(const QMqttMessage &message)
+{
+    for (int i = 0; i < messages.size(); i++) {
+        if (messages[i] == message) {
+            removeRow(i);
+            break;
+        }
+    }
+}
+
 void MessageModel::clear()
 {
     removeRows(0, rowCount());
