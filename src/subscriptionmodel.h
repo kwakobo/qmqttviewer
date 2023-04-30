@@ -6,6 +6,7 @@
 
 class SubscriptionModel : public QAbstractListModel
 {
+    Q_OBJECT
 public:
     SubscriptionModel(QObject *parent = nullptr);
 
