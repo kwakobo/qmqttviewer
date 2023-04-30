@@ -9,13 +9,14 @@ enum SubscriptionElement {
     SE_Unsubscribe,
 };
 
+static QSize elementSize(SubscriptionElement element);
 static QRect elementRect(SubscriptionElement element, const QStyleOption *opt);
 static void initButtonOption(QStyleOptionButton &opt, const QPushButton *button);
 
 SubscriptionItemDelegate::SubscriptionItemDelegate(QObject *parent) :
     QStyledItemDelegate(parent), unsubscribe(new QPushButton("Unsubscribe"))
 {
-    unsubscribe->resize(100, 20);
+    unsubscribe->resize(elementSize(SE_Unsubscribe));
 }
 
 SubscriptionItemDelegate::~SubscriptionItemDelegate()
@@ -101,6 +102,16 @@ QSize SubscriptionItemDelegate::sizeHint(const QStyleOptionViewItem &option,
     auto styled = QStyledItemDelegate::sizeHint(option, index);
     styled.setHeight(50);
     return styled;
+}
+
+static QSize elementSize(SubscriptionElement element)
+{
+    switch (element) {
+    case SE_Unsubscribe:
+        return {100, 20};
+    default:
+        return {};
+    }
 }
 
 static QRect elementRect(SubscriptionElement element, const QStyleOption *opt)
