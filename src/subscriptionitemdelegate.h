@@ -37,5 +37,6 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
+    QPushButton *mute;
     QPushButton *unsubscribe;
 };

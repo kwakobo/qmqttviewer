@@ -3,6 +3,7 @@
 #include <QAbstractListModel>
 #include <QList>
 #include <QMqttSubscription>
+#include <QSet>
 
 class SubscriptionModel : public QAbstractListModel
 {
@@ -11,6 +12,12 @@ public:
     SubscriptionModel(QObject *parent = nullptr);
 
     void addSubscription(QMqttSubscription *subscription);
+
+    void toggleMute(const QModelIndex &index);
+
+    bool isMuted(QMqttSubscription *subscription) const;
+
+    bool isMuted(const QModelIndex &index) const;
 
     void clear();
 
@@ -23,5 +30,6 @@ public:
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
 private:
+    QSet<QMqttSubscription *> muted;
     QList<QMqttSubscription *> subscriptions;
 };

@@ -251,8 +251,10 @@ void QMqttViewer::handleSubscribe()
 
 void QMqttViewer::handleMessageReceived(const QMqttMessage &message)
 {
-    messages->addMessage(message);
     auto subscription = qobject_cast<QMqttSubscription *>(sender());
+    if (subscriptions->isMuted(subscription))
+        return;
+    messages->addMessage(message);
     connect(subscription,
             &QMqttSubscription::stateChanged,
             this,

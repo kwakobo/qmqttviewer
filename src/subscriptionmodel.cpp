@@ -9,6 +9,30 @@ void SubscriptionModel::addSubscription(QMqttSubscription *subscription)
     endInsertRows();
 }
 
+void SubscriptionModel::toggleMute(const QModelIndex &index)
+{
+    if (index.row() < 0 || index.row() > rowCount())
+        return;
+    auto subscription = subscriptions[index.row()];
+    if (muted.contains(subscription))
+        muted.remove(subscription);
+    else
+        muted.insert(subscription);
+}
+
+bool SubscriptionModel::isMuted(QMqttSubscription *subscription) const
+{
+    return muted.contains(subscription);
+}
+
+bool SubscriptionModel::isMuted(const QModelIndex &index) const
+{
+    if (index.row() < 0 || index.row() > rowCount())
+        return false;
+    auto subscription = subscriptions[index.row()];
+    return isMuted(subscription);
+}
+
 void SubscriptionModel::clear()
 {
     removeRows(0, rowCount());
