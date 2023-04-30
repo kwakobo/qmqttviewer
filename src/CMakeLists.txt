@@ -1,7 +1,8 @@
 find_package(Qt6 COMPONENTS Core Mqtt Widgets)
 find_package(Protobuf REQUIRED)
 
-qt_standard_project_setup()
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
 
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS decoder/sparkplug_b.proto)
 include_directories(${PROTOBUF_INCLUDE_DIRS})
