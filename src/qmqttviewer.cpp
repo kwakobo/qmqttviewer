@@ -176,6 +176,9 @@ void QMqttViewer::handleError(QMqttClient::ClientError error)
     case QMqttClient::NotAuthorized:
         qWarning() << "Authentication failed";
         break;
+    case QMqttClient::TransportInvalid:
+        qWarning() << "The underlying transport caused an error";
+        break;
     default:
         qDebug() << error;
         break;
