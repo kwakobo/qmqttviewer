@@ -53,6 +53,7 @@ Broker BrokerDialog::broker() const
     broker.keepAlive = ui->keepAlive->text().toInt();
     broker.cleanSession = ui->cleanSession->isChecked();
     broker.autoReconnect = ui->autoReconnect->isChecked();
+    broker.mqttVersion = ui->mqttVersion->currentData().value<QMqttClient::ProtocolVersion>();
 
     broker.username = ui->username->text();
     broker.password = ui->password->text();
