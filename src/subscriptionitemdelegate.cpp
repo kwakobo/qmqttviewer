@@ -31,32 +31,6 @@ SubscriptionItemDelegate::~SubscriptionItemDelegate()
     delete unsubscribe;
 }
 
-QWidget *SubscriptionItemDelegate::createEditor(QWidget *parent,
-                                                const QStyleOptionViewItem &option,
-                                                const QModelIndex &index) const
-{
-    return QStyledItemDelegate::createEditor(parent, option, index);
-}
-
-void SubscriptionItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
-{
-    QStyledItemDelegate::setEditorData(editor, index);
-}
-
-void SubscriptionItemDelegate::setModelData(QWidget *editor,
-                                            QAbstractItemModel *model,
-                                            const QModelIndex &index) const
-{
-    QStyledItemDelegate::setModelData(editor, model, index);
-}
-
-void SubscriptionItemDelegate::updateEditorGeometry(QWidget *editor,
-                                                    const QStyleOptionViewItem &option,
-                                                    const QModelIndex &index) const
-{
-    QStyledItemDelegate::updateEditorGeometry(editor, option, index);
-}
-
 bool SubscriptionItemDelegate::editorEvent(QEvent *event,
                                            QAbstractItemModel *model,
                                            const QStyleOptionViewItem &option,
