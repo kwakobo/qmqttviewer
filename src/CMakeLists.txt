@@ -17,6 +17,7 @@ add_executable(qmqttviewer WIN32
     brokerdialog.h brokerdialog.cpp brokerdialog.ui
     brokermodel.h brokermodel.cpp
     main.cpp
+    messageitemdelegate.h messageitemdelegate.cpp
     messagemodel.h messagemodel.cpp
     mqttpayload.h
     qmqttviewer.cpp qmqttviewer.h qmqttviewer.ui

@@ -1,5 +1,6 @@
 #include "qmqttviewer.h"
 #include "brokerdialog.h"
+#include "messageitemdelegate.h"
 #include "subscriptionitemdelegate.h"
 #include "ui_qmqttviewer.h"
 
@@ -49,6 +50,7 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
     subscribeQos->addButton(ui->subscriptionQos2);
 
     ui->subscriptions->setItemDelegate(new SubscriptionItemDelegate(this));
+    ui->messages->setItemDelegate(new MessageItemDelegate(this));
 
     connect(ui->exit, &QAction::triggered, qApp, &QApplication::exit);
     connect(ui->editConnections, &QAction::triggered, this, &QMqttViewer::openAddBrokerDialog);
@@ -252,6 +254,7 @@ void QMqttViewer::handleSubscribe()
             this,
             &QMqttViewer::handleMessageReceived);
     subscriptions->addSubscription(subscription);
+    counts.insert(subscription, 0);
 }
 
 void QMqttViewer::handleMessageReceived(const QMqttMessage &message)
@@ -259,7 +262,9 @@ void QMqttViewer::handleMessageReceived(const QMqttMessage &message)
     auto subscription = qobject_cast<QMqttSubscription *>(sender());
     if (subscriptions->isMuted(subscription))
         return;
-    messages->addMessage(message);
+    Q_ASSERT(counts.contains(subscription));
+    counts[subscription] += 1;
+    messages->addMessage(message, counts[subscription]);
     connect(subscription,
             &QMqttSubscription::stateChanged,
             this,

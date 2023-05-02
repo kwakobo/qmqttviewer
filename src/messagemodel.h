@@ -13,11 +13,13 @@ public:
         Topic = Qt::UserRole + 1,
         Message,
         DateTime,
+        Count,
+        Qos,
     };
 
     MessageModel(QObject *parent = nullptr);
 
-    void addMessage(const QMqttMessage &message);
+    void addMessage(const QMqttMessage &message, int count);
 
     void removeMessage(const QMqttMessage &message);
 
@@ -32,4 +34,5 @@ public:
 private:
     QList<QMqttMessage> messages;
     QList<QDateTime> times;
+    QList<int> counts;
 };

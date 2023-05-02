@@ -4,11 +4,12 @@
 
 MessageModel::MessageModel(QObject *parent) {}
 
-void MessageModel::addMessage(const QMqttMessage &message)
+void MessageModel::addMessage(const QMqttMessage &message, int count)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     messages.push_back(message);
     times.push_back(QDateTime::currentDateTime());
+    counts.push_back(count);
     endInsertRows();
 }
 
@@ -40,6 +41,10 @@ QVariant MessageModel::data(const QModelIndex &index, int role) const
         return messages[index.row()].payload();
     case DateTime:
         return times[index.row()];
+    case Count:
+        return counts[index.row()];
+    case Qos:
+        return messages[index.row()].qos();
     default:
         return {};
     }

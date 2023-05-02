@@ -6,9 +6,11 @@
 #include "subscriptionmodel.h"
 
 #include <QByteArray>
+#include <QHash>
 #include <QMainWindow>
 #include <QMqttClient>
 #include <QMqttMessage>
+#include <QMqttSubscription>
 #include <QMqttTopicName>
 #include <QStringListModel>
 
@@ -52,6 +54,7 @@ private:
     MessageModel *messages;
     SubscriptionModel *subscriptions;
 
+    QHash<QMqttSubscription *, int> counts;
     QList<QWidget *> widgets;
 
     QList<AbstractMessageDecoder *> decoders;
