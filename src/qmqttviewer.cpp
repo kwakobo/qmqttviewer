@@ -65,7 +65,7 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
             this,
             &QMqttViewer::handleMessage);
     connect(messages, &MessageModel::rowsInserted, ui->messages, [this]() {
-        if (ui->autoscroll->isChecked())
+        if (!ui->autoscroll->isChecked())
             return;
         auto index = messages->index(messages->rowCount() - 1);
         ui->messages->scrollToBottom();
