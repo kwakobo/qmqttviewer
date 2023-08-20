@@ -247,6 +247,9 @@
             <pointsize>11</pointsize>
            </font>
           </property>
+          <property name="tabStopDistance">
+           <double>32.000000000000000</double>
+          </property>
          </widget>
         </item>
         <item>
