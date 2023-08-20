@@ -7,6 +7,11 @@ QString JsonPrettyMessageHandler::displayName() const
     return QStringLiteral("JSON Pretty Fromat");
 }
 
+int JsonPrettyMessageHandler::features() const
+{
+    return Decode;
+}
+
 QString JsonPrettyMessageHandler::decodePayload(const QByteArray &message) const
 {
     QJsonParseError error;

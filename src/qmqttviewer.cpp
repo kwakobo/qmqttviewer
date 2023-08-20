@@ -32,8 +32,12 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    for (int i = 0; i < handlers.size(); i++)
-        ui->decoder->insertItem(i, handlers[i]->displayName() + QStringLiteral(" Decoder"));
+    for (int i = 0; i < handlers.size(); i++) {
+        if (handlers[i]->features() & AbstractMessageHandler::Encode)
+            ui->encoder->insertItem(i, handlers[i]->displayName() + QStringLiteral(" Encoder"), i);
+        if (handlers[i]->features() & AbstractMessageHandler::Decode)
+            ui->decoder->insertItem(i, handlers[i]->displayName() + QStringLiteral(" Decoder"), i);
+    }
 
     ui->broker->setModel(brokers);
     ui->messages->setModel(messages);
@@ -256,8 +260,10 @@ void QMqttViewer::handlePublish()
     auto topic = ui->publishTopic->text();
     if (topic.isEmpty())
         return;
+    auto encoder = handlers[ui->encoder->currentData().toInt()];
+    auto message = encoder->encodePayload(ui->payload->toPlainText());
     client->publish(topic,
-                    ui->payload->toPlainText().toLocal8Bit(),
+                    message,
                     qos({ui->publishQos0, ui->publishQos1, ui->publishQos2}),
                     ui->retained->isChecked());
 }
@@ -316,7 +322,7 @@ void QMqttViewer::clearMessages()
 
 void QMqttViewer::updateMessage(const QModelIndex &index)
 {
-    auto decoder = handlers[ui->decoder->currentIndex()];
+    auto decoder = handlers[ui->decoder->currentData().toInt()];
     auto message = decoder->decodePayload(
         messages->data(index, MessageModel::Message).toByteArray());
 
