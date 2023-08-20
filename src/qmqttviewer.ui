@@ -178,6 +178,33 @@
         <item>
          <widget class="QPlainTextEdit" name="payload"/>
         </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="encoderLabel">
+            <property name="text">
+             <string>Payload encoded by</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="encoder"/>
+          </item>
+         </layout>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="subscribeTab">
@@ -467,7 +494,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLabel" name="label">
+                <widget class="QLabel" name="decodeLabel">
                  <property name="text">
                   <string>Payload decoded by</string>
                  </property>

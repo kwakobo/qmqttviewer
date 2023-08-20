@@ -1,13 +1,13 @@
-#include "jsonprettymessagedecoder.h"
+#include "jsonprettymessagehandler.h"
 
 #include <QJsonDocument>
 
-QString JsonPrettyMessageDecoder::displayName() const
+QString JsonPrettyMessageHandler::displayName() const
 {
-    return QStringLiteral("JSON Pretty Fromat Decoder");
+    return QStringLiteral("JSON Pretty Fromat");
 }
 
-QString JsonPrettyMessageDecoder::decodePayload(const QByteArray &message)
+QString JsonPrettyMessageHandler::decodePayload(const QByteArray &message)
 {
     QJsonParseError error;
     auto doc = QJsonDocument::fromJson(message, &error);

@@ -4,11 +4,11 @@
 #include "subscriptionitemdelegate.h"
 #include "ui_qmqttviewer.h"
 
-#include "decoder/base64decoder.h"
-#include "decoder/hexmessagedecoder.h"
-#include "decoder/jsonprettymessagedecoder.h"
-#include "decoder/plainmessagedecoder.h"
-#include "decoder/sparkplugmessagedecoder.h"
+#include "handler/base64handler.h"
+#include "handler/hexmessagehandler.h"
+#include "handler/jsonprettymessagehandler.h"
+#include "handler/plainmessagehandler.h"
+#include "handler/sparkplugmessagehandler.h"
 
 #include <QButtonGroup>
 #include <QSettings>
@@ -22,18 +22,18 @@ static void log(QtMsgType type, const QMessageLogContext &context, const QString
 QMqttViewer::QMqttViewer(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::QMqttViewer), client(new QMqttClient(this)),
     brokers(new BrokerModel(this)), messages(new MessageModel(this)),
-    subscriptions(new SubscriptionModel(this)), decoders({
-                                                    new PlainMessageDecoder,
-                                                    new JsonPrettyMessageDecoder,
-                                                    new Base64Decoder,
-                                                    new HexMessageDecoder,
-                                                    new SparkplugMessageDecoder,
+    subscriptions(new SubscriptionModel(this)), handlers({
+                                                    new PlainMessageHandler,
+                                                    new JsonPrettyMessageHandler,
+                                                    new Base64Handler,
+                                                    new HexMessageHandler,
+                                                    new SparkplugMessageHandler,
                                                 })
 {
     ui->setupUi(this);
 
-    for (int i = 0; i < decoders.size(); i++)
-        ui->decoder->insertItem(i, decoders[i]->displayName());
+    for (int i = 0; i < handlers.size(); i++)
+        ui->decoder->insertItem(i, handlers[i]->displayName() + QStringLiteral(" Decoder"));
 
     ui->broker->setModel(brokers);
     ui->messages->setModel(messages);
@@ -101,7 +101,7 @@ QMqttViewer::~QMqttViewer()
 
     delete client;
     delete ui;
-    qDeleteAll(decoders);
+    qDeleteAll(handlers);
 }
 
 void QMqttViewer::loadSettings()
@@ -300,7 +300,7 @@ void QMqttViewer::handleMessageReceived(const QMqttMessage &message)
 
 void QMqttViewer::handleMessageDecoder(int index)
 {
-    Q_ASSERT(index >= 0 && index <= decoders.size());
+    Q_ASSERT(index >= 0 && index <= handlers.size());
     updateMessage(ui->messages->currentIndex());
 }
 
@@ -316,7 +316,7 @@ void QMqttViewer::clearMessages()
 
 void QMqttViewer::updateMessage(const QModelIndex &index)
 {
-    auto decoder = decoders[ui->decoder->currentIndex()];
+    auto decoder = handlers[ui->decoder->currentIndex()];
     auto message = decoder->decodePayload(
         messages->data(index, MessageModel::Message).toByteArray());
 

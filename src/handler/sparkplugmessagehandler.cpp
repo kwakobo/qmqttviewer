@@ -1,4 +1,4 @@
-#include "sparkplugmessagedecoder.h"
+#include "sparkplugmessagehandler.h"
 #include "sparkplug_b.pb.h"
 
 #include <QObject>
@@ -10,12 +10,12 @@
 namespace sparkplug = org::eclipse::tahu::protobuf;
 namespace util = google::protobuf::util;
 
-QString SparkplugMessageDecoder::displayName() const
+QString SparkplugMessageHandler::displayName() const
 {
-    return QStringLiteral("Sparkplug Decoder");
+    return QStringLiteral("Sparkplug");
 }
 
-QString SparkplugMessageDecoder::decodePayload(const QByteArray &message)
+QString SparkplugMessageHandler::decodePayload(const QByteArray &message)
 {
     sparkplug::Payload payload;
     if (!payload.ParseFromString(message.toStdString()))

@@ -4,7 +4,7 @@ find_package(Protobuf REQUIRED)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS decoder/sparkplug_b.proto)
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS handler/sparkplug_b.proto)
 include_directories(${PROTOBUF_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -23,12 +23,12 @@ add_executable(qmqttviewer WIN32
     qmqttviewer.cpp qmqttviewer.h qmqttviewer.ui
     subscriptionitemdelegate.h subscriptionitemdelegate.cpp
     subscriptionmodel.h subscriptionmodel.cpp
-    decoder/abstractmessagedecoder.h
-    decoder/base64decoder.h decoder/base64decoder.cpp
-    decoder/hexmessagedecoder.cpp decoder/hexmessagedecoder.h
-    decoder/jsonprettymessagedecoder.h decoder/jsonprettymessagedecoder.cpp
-    decoder/plainmessagedecoder.cpp decoder/plainmessagedecoder.h
-    decoder/sparkplugmessagedecoder.cpp decoder/sparkplugmessagedecoder.h
+    handler/abstractmessagehandler.h
+    handler/base64handler.h handler/base64handler.cpp
+    handler/hexmessagehandler.cpp handler/hexmessagehandler.h
+    handler/jsonprettymessagehandler.h handler/jsonprettymessagehandler.cpp
+    handler/plainmessagehandler.cpp handler/plainmessagehandler.h
+    handler/sparkplugmessagehandler.cpp handler/sparkplugmessagehandler.h
     ${FORMS_HEADERS}
     ${PROTO_SRCS} ${PROTO_HDRS}
 )

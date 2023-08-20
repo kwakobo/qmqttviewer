@@ -3,7 +3,7 @@
 #include <QByteArray>
 #include <QString>
 
-class AbstractMessageDecoder
+class AbstractMessageHandler
 {
 public:
     virtual QString displayName() const = 0;

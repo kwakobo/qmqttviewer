@@ -1,8 +1,8 @@
 #pragma once
 
-#include "abstractmessagedecoder.h"
+#include "abstractmessagehandler.h"
 
-class PlainMessageDecoder : public AbstractMessageDecoder
+class JsonPrettyMessageHandler : public AbstractMessageHandler
 {
 public:
     QString displayName() const override;

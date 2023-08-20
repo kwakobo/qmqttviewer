@@ -1,8 +1,8 @@
 #pragma once
 
-#include "abstractmessagedecoder.h"
+#include "abstractmessagehandler.h"
 
-class Base64Decoder : public AbstractMessageDecoder
+class SparkplugMessageHandler : public AbstractMessageHandler
 {
 public:
     QString displayName() const override;

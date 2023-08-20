@@ -1,7 +1,7 @@
 #pragma once
 
 #include "brokermodel.h"
-#include "decoder/abstractmessagedecoder.h"
+#include "handler/abstractmessagehandler.h"
 #include "messagemodel.h"
 #include "subscriptionmodel.h"
 
@@ -59,5 +59,5 @@ private:
     QHash<QMqttSubscription *, int> counts;
     QList<QWidget *> widgets;
 
-    QList<AbstractMessageDecoder *> decoders;
+    QList<AbstractMessageHandler *> handlers;
 };
