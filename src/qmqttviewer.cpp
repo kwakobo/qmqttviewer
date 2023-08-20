@@ -249,6 +249,8 @@ void QMqttViewer::handleSubscribe()
                                           qos({ui->subscriptionQos0,
                                                ui->subscriptionQos1,
                                                ui->subscriptionQos2}));
+    if (!subscription)
+        return;
     connect(subscription,
             &QMqttSubscription::messageReceived,
             this,
