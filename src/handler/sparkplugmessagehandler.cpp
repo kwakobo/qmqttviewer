@@ -15,7 +15,7 @@ QString SparkplugMessageHandler::displayName() const
     return QStringLiteral("Sparkplug");
 }
 
-QString SparkplugMessageHandler::decodePayload(const QByteArray &message)
+QString SparkplugMessageHandler::decodePayload(const QByteArray &message) const
 {
     sparkplug::Payload payload;
     if (!payload.ParseFromString(message.toStdString()))

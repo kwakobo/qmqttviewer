@@ -7,7 +7,7 @@ QString JsonPrettyMessageHandler::displayName() const
     return QStringLiteral("JSON Pretty Fromat");
 }
 
-QString JsonPrettyMessageHandler::decodePayload(const QByteArray &message)
+QString JsonPrettyMessageHandler::decodePayload(const QByteArray &message) const
 {
     QJsonParseError error;
     auto doc = QJsonDocument::fromJson(message, &error);
