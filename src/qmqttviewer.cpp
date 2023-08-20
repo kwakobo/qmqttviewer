@@ -97,6 +97,8 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
 
 QMqttViewer::~QMqttViewer()
 {
+    saveUiSettings();
+
     delete client;
     delete ui;
     qDeleteAll(decoders);
@@ -124,6 +126,10 @@ void QMqttViewer::loadSettings()
         brokers->addBroker(broker);
     }
     settings.endArray();
+
+    ui->broker->setCurrentIndex(settings.value("brokerIndex", 0).toInt());
+    ui->publishTopic->setText(settings.value("pubTopic").toString());
+    ui->subcribeTopic->setText(settings.value("subTopic").toString());
 }
 
 void QMqttViewer::saveSettings()
@@ -147,6 +153,16 @@ void QMqttViewer::saveSettings()
         settings.setValue("sslProtocol", broker.sslProtocol);
     }
     settings.endArray();
+
+    saveUiSettings();
+}
+
+void QMqttViewer::saveUiSettings()
+{
+    QSettings settings;
+    settings.setValue("brokerIndex", ui->broker->currentIndex());
+    settings.setValue("pubTopic", ui->publishTopic->text());
+    settings.setValue("subTopic", ui->subcribeTopic->text());
 }
 
 void QMqttViewer::handleConnected()
