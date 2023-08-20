@@ -52,6 +52,10 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
     ui->subscriptions->setItemDelegate(new SubscriptionItemDelegate(this));
     ui->messages->setItemDelegate(new MessageItemDelegate(this));
 
+    auto additionalMenu = new QMenu;
+    auto clear = additionalMenu->addAction(tr("Clear messages"));
+    ui->additional->setMenu(additionalMenu);
+
     connect(ui->exit, &QAction::triggered, qApp, &QApplication::exit);
     connect(ui->editConnections, &QAction::triggered, this, &QMqttViewer::openAddBrokerDialog);
     connect(ui->about, &QAction::triggered, qApp, &QApplication::aboutQt);
@@ -59,6 +63,8 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
     connect(ui->publish, &QPushButton::clicked, this, &QMqttViewer::handlePublish);
     connect(ui->subscribe, &QPushButton::clicked, this, &QMqttViewer::handleSubscribe);
     connect(ui->decoder, &QComboBox::activated, this, &QMqttViewer::handleMessageDecoder);
+    connect(ui->additional, &QToolButton::clicked, ui->additional, &QToolButton::showMenu);
+    connect(clear, &QAction::triggered, this, &QMqttViewer::clearMessages);
 
     connect(ui->messages->selectionModel(),
             &QItemSelectionModel::currentChanged,
@@ -285,6 +291,11 @@ void QMqttViewer::handleMessageDecoder(int index)
 void QMqttViewer::handleMessage(const QModelIndex &current, const QModelIndex &previous)
 {
     updateMessage(current);
+}
+
+void QMqttViewer::clearMessages()
+{
+    messages->clear();
 }
 
 void QMqttViewer::updateMessage(const QModelIndex &index)

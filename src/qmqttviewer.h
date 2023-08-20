@@ -41,6 +41,7 @@ private slots:
     void handleMessageReceived(const QMqttMessage &message);
     void handleMessageDecoder(int index);
     void handleMessage(const QModelIndex &current, const QModelIndex &previous);
+    void clearMessages();
 
     void updateMessage(const QModelIndex &index);
 
