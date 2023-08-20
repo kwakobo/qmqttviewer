@@ -134,6 +134,8 @@ void QMqttViewer::loadSettings()
     ui->broker->setCurrentIndex(settings.value("brokerIndex", 0).toInt());
     ui->publishTopic->setText(settings.value("pubTopic").toString());
     ui->subcribeTopic->setText(settings.value("subTopic").toString());
+    ui->encoder->setCurrentText(settings.value("encoder").toString());
+    ui->decoder->setCurrentText(settings.value("decoder").toString());
 }
 
 void QMqttViewer::saveSettings()
@@ -167,6 +169,8 @@ void QMqttViewer::saveUiSettings()
     settings.setValue("brokerIndex", ui->broker->currentIndex());
     settings.setValue("pubTopic", ui->publishTopic->text());
     settings.setValue("subTopic", ui->subcribeTopic->text());
+    settings.setValue("encoder", ui->encoder->currentText());
+    settings.setValue("decoder", ui->decoder->currentText());
 }
 
 void QMqttViewer::handleConnected()
