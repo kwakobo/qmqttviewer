@@ -63,6 +63,8 @@ bool MessageModel::removeRows(int row, int count, const QModelIndex &parent)
         return false;
     beginRemoveRows(parent, row, row + count - 1);
     messages.remove(row, count);
+    times.remove(row, count);
+    counts.remove(row, count);
     endRemoveRows();
     return true;
 }
