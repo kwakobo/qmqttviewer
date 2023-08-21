@@ -22,13 +22,14 @@ static void log(QtMsgType type, const QMessageLogContext &context, const QString
 QMqttViewer::QMqttViewer(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::QMqttViewer), client(new QMqttClient(this)),
     brokers(new BrokerModel(this)), messages(new MessageModel(this)),
-    subscriptions(new SubscriptionModel(this)), handlers({
-                                                    new PlainMessageHandler,
-                                                    new JsonPrettyMessageHandler,
-                                                    new Base64Handler,
-                                                    new HexMessageHandler,
-                                                    new SparkplugMessageHandler,
-                                                })
+    subscriptions(new SubscriptionModel(this)), topics(new TopicModel), topicSubscription(nullptr),
+    handlers({
+        new PlainMessageHandler,
+        new JsonPrettyMessageHandler,
+        new Base64Handler,
+        new HexMessageHandler,
+        new SparkplugMessageHandler,
+    })
 {
     ui->setupUi(this);
 
@@ -42,6 +43,7 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
     ui->broker->setModel(brokers);
     ui->messages->setModel(messages);
     ui->subscriptions->setModel(subscriptions);
+    ui->topics->setModel(topics);
 
     auto publishQos = new QButtonGroup(this);
     publishQos->addButton(ui->publishQos0);
@@ -60,6 +62,12 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
     auto clear = additionalMenu->addAction(tr("Clear messages"));
     ui->additional->setMenu(additionalMenu);
 
+    auto topicAdditionalMenu = new QMenu;
+    auto clearTopics = topicAdditionalMenu->addAction(tr("Clear topics"));
+    ui->topicAdditional->setMenu(topicAdditionalMenu);
+
+    auto addTopic = ui->topics->addAction(tr("Subscribe"));
+
     connect(ui->exit, &QAction::triggered, qApp, &QApplication::exit);
     connect(ui->editConnections, &QAction::triggered, this, &QMqttViewer::openAddBrokerDialog);
     connect(ui->about, &QAction::triggered, qApp, &QApplication::aboutQt);
@@ -69,6 +77,9 @@ QMqttViewer::QMqttViewer(QWidget *parent) :
     connect(ui->decoder, &QComboBox::activated, this, &QMqttViewer::handleMessageDecoder);
     connect(ui->additional, &QToolButton::clicked, ui->additional, &QToolButton::showMenu);
     connect(clear, &QAction::triggered, this, &QMqttViewer::clearMessages);
+    connect(ui->scan, &QPushButton::clicked, this, &QMqttViewer::scanTopics);
+    connect(clearTopics, &QAction::triggered, this, &QMqttViewer::clearTopics);
+    connect(addTopic, &QAction::triggered, this, &QMqttViewer::subscribeTopic);
 
     connect(ui->messages->selectionModel(),
             &QItemSelectionModel::currentChanged,
@@ -106,6 +117,33 @@ QMqttViewer::~QMqttViewer()
     delete client;
     delete ui;
     qDeleteAll(handlers);
+}
+
+static int qos(const QList<QCheckBox *> &checkboxes)
+{
+    for (int i = 0; i < checkboxes.size(); i++) {
+        if (checkboxes[i]->isChecked())
+            return i;
+    }
+    return 0;
+}
+
+void QMqttViewer::subscribe(const QString &topic)
+{
+    if (topic.isEmpty() || subscriptions->contains(topic))
+        return;
+    auto subscription = client->subscribe(topic,
+                                          qos({ui->subscriptionQos0,
+                                               ui->subscriptionQos1,
+                                               ui->subscriptionQos2}));
+    if (!subscription)
+        return;
+    connect(subscription,
+            &QMqttSubscription::messageReceived,
+            this,
+            &QMqttViewer::handleMessageReceived);
+    subscriptions->addSubscription(subscription);
+    counts.insert(subscription, 0);
 }
 
 void QMqttViewer::loadSettings()
@@ -250,15 +288,6 @@ void QMqttViewer::handleConnect()
     ui->connect->setText(tr("Connecting"));
 }
 
-static int qos(const QList<QCheckBox *> &checkboxes)
-{
-    for (int i = 0; i < checkboxes.size(); i++) {
-        if (checkboxes[i]->isChecked())
-            return i;
-    }
-    return 0;
-}
-
 void QMqttViewer::handlePublish()
 {
     auto topic = ui->publishTopic->text();
@@ -274,21 +303,7 @@ void QMqttViewer::handlePublish()
 
 void QMqttViewer::handleSubscribe()
 {
-    auto topic = ui->subcribeTopic->text();
-    if (topic.isEmpty() || subscriptions->contains(topic))
-        return;
-    auto subscription = client->subscribe(topic,
-                                          qos({ui->subscriptionQos0,
-                                               ui->subscriptionQos1,
-                                               ui->subscriptionQos2}));
-    if (!subscription)
-        return;
-    connect(subscription,
-            &QMqttSubscription::messageReceived,
-            this,
-            &QMqttViewer::handleMessageReceived);
-    subscriptions->addSubscription(subscription);
-    counts.insert(subscription, 0);
+    subscribe(ui->subcribeTopic->text());
 }
 
 void QMqttViewer::handleMessageReceived(const QMqttMessage &message)
@@ -322,6 +337,43 @@ void QMqttViewer::handleMessage(const QModelIndex &current, const QModelIndex &p
 void QMqttViewer::clearMessages()
 {
     messages->clear();
+}
+
+void QMqttViewer::scanTopics()
+{
+    if (!topicSubscription) {
+        topicSubscription = client->subscribe(QMqttTopicFilter("#"));
+        connect(topicSubscription,
+                &QMqttSubscription::messageReceived,
+                this,
+                &QMqttViewer::handleTopicMessage);
+        ui->scan->setText(tr("Stop"));
+    } else {
+        topicSubscription->unsubscribe();
+        topicSubscription = nullptr;
+        ui->scan->setText(tr("Scan"));
+    }
+}
+
+void QMqttViewer::handleTopicMessage(const QMqttMessage &message)
+{
+    topics->addTopic(message.topic().name());
+}
+
+void QMqttViewer::clearTopics()
+{
+    topics->clear();
+}
+
+void QMqttViewer::subscribeTopic()
+{
+    const auto selections = ui->topics->selectionModel()->selectedIndexes();
+    if (selections.isEmpty())
+        return;
+    for (const auto &selection : selections) {
+        auto topic = selection.data().toString();
+        subscribe(topic);
+    }
 }
 
 void QMqttViewer::updateMessage(const QModelIndex &index)

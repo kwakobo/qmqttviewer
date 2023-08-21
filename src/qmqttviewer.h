@@ -4,6 +4,7 @@
 #include "handler/abstractmessagehandler.h"
 #include "messagemodel.h"
 #include "subscriptionmodel.h"
+#include "topicmodel.h"
 
 #include <QByteArray>
 #include <QHash>
@@ -12,7 +13,6 @@
 #include <QMqttMessage>
 #include <QMqttSubscription>
 #include <QMqttTopicName>
-#include <QStringListModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,6 +26,8 @@ class QMqttViewer : public QMainWindow
 public:
     QMqttViewer(QWidget *parent = nullptr);
     ~QMqttViewer();
+
+    void subscribe(const QString &topic);
 
 private slots:
     void loadSettings();
@@ -43,6 +45,10 @@ private slots:
     void handleMessageDecoder(int index);
     void handleMessage(const QModelIndex &current, const QModelIndex &previous);
     void clearMessages();
+    void scanTopics();
+    void handleTopicMessage(const QMqttMessage &message);
+    void clearTopics();
+    void subscribeTopic();
 
     void updateMessage(const QModelIndex &index);
 
@@ -55,6 +61,9 @@ private:
     BrokerModel *brokers;
     MessageModel *messages;
     SubscriptionModel *subscriptions;
+    TopicModel *topics;
+
+    QMqttSubscription *topicSubscription;
 
     QHash<QMqttSubscription *, int> counts;
     QList<QWidget *> widgets;

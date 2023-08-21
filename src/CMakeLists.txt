@@ -23,6 +23,7 @@ add_executable(qmqttviewer WIN32
     qmqttviewer.cpp qmqttviewer.h qmqttviewer.ui
     subscriptionitemdelegate.h subscriptionitemdelegate.cpp
     subscriptionmodel.h subscriptionmodel.cpp
+    topicmodel.h topicmodel.cpp
     handler/abstractmessagehandler.h
     handler/base64handler.h handler/base64handler.cpp
     handler/hexmessagehandler.cpp handler/hexmessagehandler.h
