@@ -4,7 +4,7 @@
 
 QString JsonPrettyMessageHandler::displayName() const
 {
-    return QStringLiteral("JSON Pretty Fromat");
+    return QStringLiteral("JSON Pretty Format");
 }
 
 int JsonPrettyMessageHandler::features() const
