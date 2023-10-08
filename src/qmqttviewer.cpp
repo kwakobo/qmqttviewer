@@ -349,7 +349,8 @@ void QMqttViewer::scanTopics()
                 &QMqttViewer::handleTopicMessage);
         ui->scan->setText(tr("Stop"));
     } else {
-        topicSubscription->unsubscribe();
+        if (!subscriptions->contains("#"))
+            topicSubscription->unsubscribe();
         topicSubscription = nullptr;
         ui->scan->setText(tr("Scan"));
     }
