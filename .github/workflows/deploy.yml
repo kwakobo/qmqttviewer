@@ -1,0 +1,35 @@
+name: Deploy
+
+# on:
+#   push:
+#     tags:
+#       - 'v*.*.*'
+
+on: [pull_request]
+
+jobs:
+  msvc:
+    runs-on: windows-2019
+    steps:
+      - run: Add-Content $env:GITHUB_PATH "C:\Ninja"
+             && mkdir C:\Ninja
+             && cd C:\Ninja
+             && curl -SL --output ninja-win.zip https://github.com/ninja-build/ninja/releases/download/v1.11.1/ninja-win.zip
+             && tar -xf ninja-win.zip
+      - run: pip install aqtinstall
+             && mkdir C:\Qt
+             && cd C:\Qt
+             && aqt install-qt windows desktop 6.5.0 win64_msvc2019_64
+             && Add-Content $env:GITHUB_PATH "C:\Qt\6.5.0\msvc2019_64\bin"
+             && pushd 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\'
+             && cmd /c "vcvars64.bat&set" foreach { if ($_ -match "=") { $v = $_.split("="); set-item -force -path "ENV:\$($v[0])"  -value "$($v[1])" } }
+             && popd
+             && git clone --depth 1 --branch v6.5.0 https://github.com/qt/qtmqtt.git
+             && cd qtmqtt
+             && cmake -GNinja -Bbuild -DQT_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_DEST_WIN }}\scripts\buildsystems\vcpkg.cmake -DCMAKE_CXX_COMPILER=cl -DCMAKE_C_COMPILER=cl
+             && cmake --build build --
+             && cmake --build build --target install --
+      - uses: actions/checkout@v3
+      - run: cmake -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=./dist
+             && cmake --build build -- -j4
+             && cmake --build build --target install --
